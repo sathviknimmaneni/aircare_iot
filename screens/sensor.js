@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import DATA from "../db/data";
+import ModalComponent from "../components/modal";
 
 const Sensor = ({ route, navigation }) => {
   const { itemId } = route.params;
   const [state, setState] = useState({});
   const d = DATA.find((item) => item.id === itemId);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({ title: `Sensor testing ${itemId}` });
@@ -50,12 +52,22 @@ const Sensor = ({ route, navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>{d.title}</Text>
 
+      <ModalComponent modal={modal} setModal={setModal} />
+
       <View style={{ ...styles.circle, borderColor: state.color }}>
         <Text style={styles.centerText}>{d.reading}</Text>
         <Text style={styles.units}>AQI</Text>
       </View>
 
-      <Text style={styles.text}>{state.text}</Text>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}
+      >
+        <Text style={{ ...styles.text, marginRight: 8 }}>{state.text}</Text>
+        <Pressable onPress={() => setModal(true)}>
+          <AntDesign name="infocirlceo" size={20} color="#2c3e50" />
+        </Pressable>
+      </View>
+
       <Text style={styles.subtext}>
         {state.subtext} Lorem ipsum dolor sit amet consectetur adipisicing elit.
       </Text>

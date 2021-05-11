@@ -38,7 +38,7 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{ title: "AirCare" }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen name="Device" component={Device} />
         <Stack.Screen name="Chart" component={Chart} />

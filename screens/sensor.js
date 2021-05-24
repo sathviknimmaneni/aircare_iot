@@ -12,65 +12,72 @@ const Sensor = ({ route, navigation }) => {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    navigation.setOptions({ title: `Sensor testing ${itemId}` });
-  });
-
-  useEffect(() => {
     switch (true) {
-      case d.reading < 25:
+      case d.reading >= 0 && d.reading < 100:
         return setState({
           color: "lightgreen",
           text: "LOW",
-          subtext: "Some comment",
+          subtext: "it is safe you can go",
         });
-      case d.reading >= 25 && d.reading < 50:
-        return setState({
-          color: "green",
-          text: "Medium",
-          subtext: "Some comment",
-        });
-      case d.reading >= 50 && d.reading < 75:
+      case d.reading >= 100 && d.reading < 150:
         return setState({
           color: "orange",
+          text: "Moderate",
+          subtext: "a bit risky take precautions",
+        });
+      case d.reading >= 150:
+        return setState({
+          color: "red",
           text: "HIGH",
-          subtext: "Some comment",
+          subtext: "it is hazardous don't come out",
         });
       default:
         return setState({
-          color: "red",
-          text: "Very HIGH",
-          subtext: "Some comment",
+          color: "grey",
+          text: "invalid value",
+          subtext: "",
         });
     }
   }, []);
-  // const getBorderColor = (value) => {
 
-  // };
-
-  // console.log(d.reading, getBorderColor(d.reading));
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{d.title}</Text>
 
       <ModalComponent modal={modal} setModal={setModal} />
 
-      <View style={{ ...styles.circle, borderColor: state.color }}>
-        <Text style={styles.centerText}>{d.reading}</Text>
-        <Text style={styles.units}>AQI</Text>
-      </View>
-
       <View
-        style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}
+        style={{
+          ...styles.circle,
+          borderColor:
+            d.units === "ppm"
+              ? state.color
+              : d.units === "c"
+              ? "orange"
+              : "green",
+        }}
       >
-        <Text style={{ ...styles.text, marginRight: 8 }}>{state.text}</Text>
-        <Pressable onPress={() => setModal(true)}>
-          <AntDesign name="infocirlceo" size={20} color="#2c3e50" />
-        </Pressable>
+        <Text style={styles.centerText}>{d.reading}</Text>
+        <Text style={styles.units}>{d.units}</Text>
       </View>
 
-      <Text style={styles.subtext}>
-        {state.subtext} Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </Text>
+      {d.units === "ppm" ? (
+        <View style={{ alignItems: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 8,
+            }}
+          >
+            <Text style={{ ...styles.text, marginRight: 8 }}>{state.text}</Text>
+            <Pressable onPress={() => setModal(true)}>
+              <AntDesign name="infocirlceo" size={20} color="#2c3e50" />
+            </Pressable>
+          </View>
+          <Text style={styles.subtext}>{state.subtext}</Text>
+        </View>
+      ) : null}
 
       <Pressable
         onPress={() => navigation.navigate("Chart", { itemId: itemId })}

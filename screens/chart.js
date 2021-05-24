@@ -7,43 +7,45 @@ import {
   VictoryAxis,
 } from "victory-native";
 
-const data = [
-  { hour: 1, value: 10 },
-  { hour: 2, value: 11 },
-  { hour: 3, value: 19 },
-  { hour: 4, value: 15 },
-  { hour: 5, value: null },
-  { hour: 6, value: null },
-  { hour: 7, value: 13 },
-  { hour: 8, value: 20 },
-];
+import DATA from "../db/data";
 
 const Chart = ({ route }) => {
   const { itemId } = route.params;
+  const d = DATA.find((item) => item.id === itemId);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Plot between Time and Sensor readings</Text>
-      <VictoryChart
-        theme={VictoryTheme.material}
-        domain={{ x: [1, 10], y: [10, 20] }}
+      <Text style={styles.title}>
+        Plot between Time (mins) and {d.title} ({d.units})
+      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          marginLeft: 25,
+          width: "70%",
+        }}
       >
-        <VictoryAxis
-          // dependentAxis
-          tickFormat={(tick) => `${Math.round(tick)} hrs`}
-        />
-        <VictoryAxis
-          dependentAxis
-          tickFormat={(tick) => `${Math.round(tick)} val`}
-        />
+        <VictoryChart theme={VictoryTheme.material} domain={d.domain}>
+          <VictoryAxis
+            // dependentAxis
+            tickFormat={(tick) => `${tick} mins`}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(tick) => `${Math.round(tick)} ${d.units}`}
+          />
 
-        <VictoryLine x="hour" y="value" data={data} />
-      </VictoryChart>
+          <VictoryLine x="hour" y="value" data={d.data} />
+        </VictoryChart>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    padding: 8,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

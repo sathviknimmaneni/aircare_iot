@@ -40,9 +40,21 @@ export default function App() {
           component={Home}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Device" component={Device} />
-        <Stack.Screen name="Chart" component={Chart} />
-        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen
+          name="Device"
+          component={Device}
+          options={{ title: "AirCare" }}
+        />
+        <Stack.Screen
+          name="Chart"
+          component={Chart}
+          options={{ title: "AirCare", headerBackTitle: "Back" }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{ title: "AirCare" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

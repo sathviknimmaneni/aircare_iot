@@ -11,7 +11,10 @@ const SensorItem = ({ data }) => {
         </View>
         {data.icon}
       </View>
-      <Text style={styles.value}>{data.reading}</Text>
+      <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+        <Text style={styles.value}>{data.reading}</Text>
+        <Text style={styles.units}>{data.units}</Text>
+      </View>
     </View>
   );
 };
@@ -49,6 +52,11 @@ const styles = StyleSheet.create({
     fontSize: 48,
     color: "white",
     marginTop: 15,
+  },
+  units: {
+    fontSize: 32,
+    color: "white",
+    marginLeft: 8,
   },
 });
 
